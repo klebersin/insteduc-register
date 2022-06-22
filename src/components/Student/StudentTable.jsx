@@ -6,20 +6,13 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import { Button, ButtonGroup } from "@mui/material";
 
-function createData(dni, name, surname, lastname, dob) {
-  return { dni, name, surname, lastname, dob };
-}
+export default function StudentTable({ editStudent, students = [] }) {
+  const deleteStudent = (dni) => {
+    console.log(dni + " Estudiante eliminado");
+  };
 
-const rows = [
-  createData(123, "Juan", "Perez", "Perez", 2005),
-  createData(3213, "Pedro", "Perez", "Perez", 2005),
-  createData(12312, "Maria", "Salas", "Perez", 2005),
-  createData(32312, "As", "Perez", "Perez", 2005),
-  createData(32313, "Lee", "Salas", "Perez", 2005),
-];
-
-export default function StudentTable() {
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -30,21 +23,37 @@ export default function StudentTable() {
             <TableCell>Apellidos paternos</TableCell>
             <TableCell>Apellidos maternos</TableCell>
             <TableCell>Fecha de nacimiento</TableCell>
+            <TableCell>Opciones</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
+          {students.map((row) => (
             <TableRow
-              key={row.dni}
+              key={row.NroDocIdent}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                {row.dni}
+                {row.NroDocIdent}
               </TableCell>
-              <TableCell>{row.name}</TableCell>
-              <TableCell>{row.surname}</TableCell>
-              <TableCell>{row.lastname}</TableCell>
-              <TableCell>{row.dob}</TableCell>
+              <TableCell>{row.nombres}</TableCell>
+              <TableCell>{row.ApePaterno}</TableCell>
+              <TableCell>{row.ApeMaterno}</TableCell>
+              <TableCell>{row.FechaNac}</TableCell>
+              <TableCell>
+                <ButtonGroup variant="contained">
+                  <Button color="success" onClick={editStudent}>
+                    Editar
+                  </Button>
+                  <Button
+                    color="error"
+                    onClick={() => {
+                      deleteStudent(row.dni);
+                    }}
+                  >
+                    Eliminar
+                  </Button>
+                </ButtonGroup>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

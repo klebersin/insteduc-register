@@ -16,6 +16,8 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import { mainListItems, secondaryListItems } from "./listItems";
 import { Button, Paper } from "@mui/material";
 import StudentTable from "./Student/StudentTable";
+import StudentForm from "./Student/StudentForm";
+import Axios from "axios";
 
 const drawerWidth = 240;
 
@@ -67,8 +69,24 @@ const mdTheme = createTheme();
 
 function DashboardContent() {
   const [open, setOpen] = React.useState(true);
+  const [openForm, setOpenForm] = React.useState(false);
+  const [students, setStudents] = React.useState([]);
   const toggleDrawer = () => {
     setOpen(!open);
+  };
+
+  const fetchStudents = async () => {
+    const fetchedStudents = await Axios.get("http://localhost:4000/student");
+
+    setStudents(fetchedStudents.data);
+  };
+
+  React.useEffect(() => {
+    fetchStudents();
+  }, []);
+
+  const openDialog = () => {
+    setOpenForm(true);
   };
 
   return (
@@ -148,6 +166,17 @@ function DashboardContent() {
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
               <Grid item xs={12}>
+                <Button variant="contained" onClick={openDialog}>
+                  Agregar un alumno
+                </Button>
+              </Grid>
+              <StudentForm
+                open={openForm}
+                handleClose={() => {
+                  setOpenForm(false);
+                }}
+              />
+              <Grid item xs={12}>
                 <Paper
                   sx={{
                     p: 2,
@@ -155,7 +184,7 @@ function DashboardContent() {
                     flexDirection: "column",
                   }}
                 >
-                  <StudentTable />
+                  <StudentTable editStudent={openDialog} students={students} />
                 </Paper>
               </Grid>
             </Grid>
