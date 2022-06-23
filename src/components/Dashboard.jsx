@@ -9,15 +9,13 @@ import List from "@mui/material/List";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
-import Container from "@mui/material/Container";
-import Grid from "@mui/material/Grid";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import { mainListItems, secondaryListItems } from "./listItems";
-import { Button, Paper } from "@mui/material";
-import StudentTable from "./Student/StudentTable";
-import StudentForm from "./Student/StudentForm";
-import Axios from "axios";
+import ListItems from "./ListItems";
+import { Button } from "@mui/material";
+import { useNavigate, useParams } from "react-router-dom";
+import StudentView from "./Student/StudentView";
+import RegisterView from "./Register/RegisterView";
 
 const drawerWidth = 240;
 
@@ -69,25 +67,29 @@ const mdTheme = createTheme();
 
 function DashboardContent() {
   const [open, setOpen] = React.useState(true);
-  const [openForm, setOpenForm] = React.useState(false);
-  const [students, setStudents] = React.useState([]);
+
   const toggleDrawer = () => {
     setOpen(!open);
   };
 
-  const fetchStudents = async () => {
-    const fetchedStudents = await Axios.get("http://localhost:4000/student");
-
-    setStudents(fetchedStudents.data);
-  };
+  const navigate = useNavigate();
 
   React.useEffect(() => {
-    fetchStudents();
-  }, []);
+    const doEffect = () => {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        navigate("/login");
+      }
+    };
+    doEffect();
+  }, [navigate]);
 
-  const openDialog = () => {
-    setOpenForm(true);
+  const logout = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
   };
+
+  const { route } = useParams();
 
   return (
     <ThemeProvider theme={mdTheme}>
@@ -121,9 +123,8 @@ function DashboardContent() {
               Insteduc
             </Typography>
             <IconButton>
-              <Button color="secondary">
+              <Button color="secondary" onClick={logout}>
                 <Typography style={{ color: "white" }}>
-                  {" "}
                   Cerrar sesión
                 </Typography>
               </Button>
@@ -145,9 +146,8 @@ function DashboardContent() {
           </Toolbar>
           <Divider />
           <List component="nav">
-            {mainListItems}
+            <ListItems />
             <Divider sx={{ my: 1 }} />
-            {secondaryListItems}
           </List>
         </Drawer>
         <Box
@@ -163,32 +163,8 @@ function DashboardContent() {
           }}
         >
           <Toolbar />
-          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <Grid container spacing={3}>
-              <Grid item xs={12}>
-                <Button variant="contained" onClick={openDialog}>
-                  Agregar un alumno
-                </Button>
-              </Grid>
-              <StudentForm
-                open={openForm}
-                handleClose={() => {
-                  setOpenForm(false);
-                }}
-              />
-              <Grid item xs={12}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    display: "flex",
-                    flexDirection: "column",
-                  }}
-                >
-                  <StudentTable editStudent={openDialog} students={students} />
-                </Paper>
-              </Grid>
-            </Grid>
-          </Container>
+          {route === "general" && <StudentView />}
+          {route === "register" && <RegisterView />}
         </Box>
       </Box>
     </ThemeProvider>

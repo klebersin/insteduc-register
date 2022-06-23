@@ -7,10 +7,17 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Button, ButtonGroup } from "@mui/material";
+import Axios from "axios";
+import ConfirmModal from "../ConfirmModal";
 
-export default function StudentTable({ editStudent, students = [] }) {
-  const deleteStudent = (dni) => {
-    console.log(dni + " Estudiante eliminado");
+export default function StudentTable({
+  editStudent,
+  students = [],
+  fetchStudents,
+}) {
+  const deleteStudent = async (id) => {
+    await Axios.delete(`http://localhost:4000/student/${id}`);
+    fetchStudents();
   };
 
   return (
@@ -29,7 +36,7 @@ export default function StudentTable({ editStudent, students = [] }) {
         <TableBody>
           {students.map((row) => (
             <TableRow
-              key={row.NroDocIdent}
+              key={row.idEstudiante}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell component="th" scope="row">
@@ -40,14 +47,21 @@ export default function StudentTable({ editStudent, students = [] }) {
               <TableCell>{row.ApeMaterno}</TableCell>
               <TableCell>{row.FechaNac}</TableCell>
               <TableCell>
-                <ButtonGroup variant="contained">
-                  <Button color="success" onClick={editStudent}>
+                <ButtonGroup>
+                  <Button
+                    variant="contained"
+                    color="success"
+                    onClick={() => {
+                      editStudent(row);
+                    }}
+                  >
                     Editar
                   </Button>
                   <Button
+                    variant="contained"
                     color="error"
                     onClick={() => {
-                      deleteStudent(row.dni);
+                      deleteStudent(row.idEstudiante);
                     }}
                   >
                     Eliminar
