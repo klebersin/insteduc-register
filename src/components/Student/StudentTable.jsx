@@ -15,6 +15,8 @@ export default function StudentTable({
   students = [],
   fetchStudents,
 }) {
+  const [deletingUser, setDeletingUser] = React.useState(null);
+  const [openModal, setOpenModal] = React.useState(false);
   const deleteStudent = async (id) => {
     await Axios.delete(`http://localhost:4000/student/${id}`);
     fetchStudents();
@@ -61,7 +63,8 @@ export default function StudentTable({
                     variant="contained"
                     color="error"
                     onClick={() => {
-                      deleteStudent(row.idEstudiante);
+                      setOpenModal(true);
+                      setDeletingUser(row.idEstudiante);
                     }}
                   >
                     Eliminar
@@ -72,6 +75,12 @@ export default function StudentTable({
           ))}
         </TableBody>
       </Table>
+      <ConfirmModal
+        open={openModal}
+        setOpen={setOpenModal}
+        deleteStudent={deleteStudent}
+        deletingUser={deletingUser}
+      />
     </TableContainer>
   );
 }

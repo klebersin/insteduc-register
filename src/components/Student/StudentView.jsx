@@ -46,14 +46,17 @@ function StudentView() {
             />
           </Paper>
         </Grid>
-        <StudentForm
-          open={openForm}
-          setOpen={setOpenForm}
-          editingStudent={editingStudent}
-          handleClose={() => {
-            setOpenForm(false);
-          }}
-        />
+        {openForm && (
+          <StudentForm
+            open={openForm}
+            setOpen={setOpenForm}
+            editingStudent={editingStudent}
+            handleClose={() => {
+              setOpenForm(false);
+            }}
+            fetchStudents={fetchStudents}
+          />
+        )}
       </Grid>
     </Container>
   );

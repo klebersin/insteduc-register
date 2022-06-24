@@ -9,11 +9,11 @@ import {
 } from "@mui/material";
 import React from "react";
 
-function ConfirmModal() {
+function ConfirmModal({ open, setOpen, deleteStudent, deletingUser }) {
   return (
     <div>
       <Dialog
-        open={true}
+        open={open}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
@@ -27,10 +27,20 @@ function ConfirmModal() {
             </Container>
           </DialogContent>
           <DialogActions>
-            <Button variant="contained" color="error">
+            <Button
+              variant="contained"
+              color="error"
+              onClick={() => setOpen(false)}
+            >
               Cancelar
             </Button>
-            <Button variant="contained" type={"submit"}>
+            <Button
+              variant="contained"
+              onClick={() => {
+                deleteStudent(deletingUser);
+                setOpen(false);
+              }}
+            >
               Eliminar
             </Button>
           </DialogActions>

@@ -35,6 +35,18 @@ export default function ListItems() {
         </ListItemIcon>
         <ListItemText primary="Reportes" />
       </ListItemButton>
+      <ListItemButton onClick={() => goTo("/")}>
+        <ListItemIcon>
+          <BarChartIcon />
+        </ListItemIcon>
+        <ListItemText primary="Docentes" />
+      </ListItemButton>
+      <ListItemButton onClick={() => goTo("/")}>
+        <ListItemIcon>
+          <BarChartIcon />
+        </ListItemIcon>
+        <ListItemText primary="Registro de notas" />
+      </ListItemButton>
     </React.Fragment>
   );
 }

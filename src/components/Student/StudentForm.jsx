@@ -14,6 +14,7 @@ export default function StudentForm({
   setOpen,
   editingStudent = {},
   handleClose,
+  fetchStudents,
 }) {
   const defaultValues = {
     nombres: editingStudent?.nombres || "",
@@ -22,15 +23,19 @@ export default function StudentForm({
   const { register, handleSubmit } = useForm(defaultValues);
 
   const save = async (data) => {
-    if (!editingStudent.id) {
+    if (!editingStudent.idEstudiante) {
       await Axios.post("http://localhost:4000/student", {
         ...data,
       });
     } else {
-      await Axios.put(`http://localhost:4000/student/${editingStudent.id}`, {
-        ...data,
-      });
+      await Axios.put(
+        `http://localhost:4000/student/${editingStudent.idEstudiante}`,
+        {
+          ...data,
+        }
+      );
     }
+    fetchStudents();
     setOpen(false);
   };
 
