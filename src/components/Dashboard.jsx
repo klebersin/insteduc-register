@@ -16,6 +16,7 @@ import { Button } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 import StudentView from "./Student/StudentView";
 import RegisterView from "./Register/RegisterView";
+import GradesView from "./Grades/GradesView";
 
 const drawerWidth = 240;
 
@@ -165,6 +166,7 @@ function DashboardContent() {
           <Toolbar />
           {route === "general" && <StudentView />}
           {route === "register" && <RegisterView />}
+          {route === "grades" && <GradesView />}
         </Box>
       </Box>
     </ThemeProvider>

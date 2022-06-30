@@ -1,18 +1,16 @@
 import { Button, Container, Grid, Paper } from "@mui/material";
 import React, { useState } from "react";
-import RegisterForm from "./RegisterForm";
-import RegisterTable from "./RegisterTable";
+import GradesModal from "./GradesModal";
+import GradesTable from "./GradesTable";
 import Axios from "axios";
 
-function RegisterView() {
-  const [registers, setRegisters] = useState([]);
+function GradesView() {
+  const [grades, setGrades] = useState([]);
   const [openModal, setOpenModal] = useState(false);
-
-  const fetchRegisters = async () => {
-    const res = await Axios.get("http://localhost:4000/register");
-    setRegisters(res.data);
+  const fetchGrades = async () => {
+    const res = await Axios.get("http://localhost:4000/grade");
+    setGrades(res.data);
   };
-
   return (
     <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
       <Grid container spacing={3}>
@@ -23,7 +21,7 @@ function RegisterView() {
               setOpenModal(true);
             }}
           >
-            Matricular un alumno
+            Agregar un Grado
           </Button>
         </Grid>
 
@@ -35,23 +33,15 @@ function RegisterView() {
               flexDirection: "column",
             }}
           >
-            <RegisterTable
-              fetchRegisters={fetchRegisters}
-              registers={registers}
-              setRegisters={setRegisters}
-            />
+            <GradesTable fetchGrades={fetchGrades} grades={grades} />
           </Paper>
         </Grid>
         {openModal && (
-          <RegisterForm
-            open={openModal}
-            setOpenForm={setOpenModal}
-            fetchRegisters={fetchRegisters}
-          />
+          <GradesModal openModal={openModal} setOpenModal={setOpenModal} />
         )}
       </Grid>
     </Container>
   );
 }
 
-export default RegisterView;
+export default GradesView;

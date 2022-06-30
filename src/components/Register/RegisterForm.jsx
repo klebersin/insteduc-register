@@ -6,20 +6,64 @@ import {
   DialogContent,
   DialogTitle,
   Grid,
+  MenuItem,
+  Select,
   TextField,
 } from "@mui/material";
 import Axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
-function RegisterForm({ open, setOpenForm }) {
+function RegisterForm({ open, setOpenForm, fetchRegisters }) {
   const [dni, setDni] = useState("");
   const [student, setStudent] = useState({});
+  const [grades, setGrades] = useState([]);
+  const [sections, setSections] = useState([]);
+  const [register, setRegister] = useState({
+    fechaMatricula: new Date(),
+  });
+
+  const fetchGrades = async () => {
+    const res = await Axios.get("http://localhost:4000/grade");
+    setGrades(res.data);
+  };
+
+  const fetchSections = async (idgrado) => {
+    const res = await Axios.get(`http://localhost:4000/section/${idgrado}`);
+    setSections(res.data);
+  };
+
+  useEffect(() => {
+    fetchGrades();
+  }, []);
+
+  const handleSubmit = async () => {
+    if (!register.idgrado) {
+      toast.error("Seleccionar grado");
+      return;
+    }
+    if (!register.idseccion) {
+      toast.error("Seleccionar seccion");
+      return;
+    }
+    if (!register.idEstudiante) {
+      toast.error("Seleccionar estudiante");
+      return;
+    }
+    try {
+      await Axios.post(`http://localhost:4000/register`, register);
+      toast.info("Matricula agregada");
+      await fetchRegisters();
+      setOpenForm(false);
+    } catch (error) {
+      toast.error(error.response?.data || "Error al agregar la matricula");
+    }
+  };
+
   const findStudent = async () => {
-    const studentFound = await Axios.get(
-      `http://localhost:4000/student/${dni}`
-    );
-    console.log(studentFound.data);
-    setStudent(studentFound.data);
+    const res = await Axios.get(`http://localhost:4000/student/${dni}`);
+    setRegister({ ...register, idEstudiante: res.data.idEstudiante });
+    setStudent(res.data);
   };
   return (
     <div>
@@ -52,7 +96,6 @@ function RegisterForm({ open, setOpenForm }) {
                     variant="contained"
                     id="dni-finder"
                     label="DNI"
-                    value={dni}
                     onClick={() => findStudent()}
                   >
                     Buscar
@@ -75,13 +118,40 @@ function RegisterForm({ open, setOpenForm }) {
                   />
                 </Grid>
                 <Grid item xs={6}>
-                  <TextField required label={"Periodo"} />
+                  <Select
+                    label="Grado"
+                    style={{ width: "100%" }}
+                    onChange={(e) => {
+                      setRegister({ ...register, idgrado: e.target.value });
+                      fetchSections(e.target.value);
+                    }}
+                  >
+                    {grades.map((grade) => (
+                      <MenuItem key={grade.idgrado} value={grade.idgrado}>
+                        {grade.nombreGrado}
+                      </MenuItem>
+                    ))}
+                  </Select>
                 </Grid>
                 <Grid item xs={6}>
-                  <TextField required label={"Grado"} />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField required label={"Seccion"} />
+                  <Select
+                    label="Grado"
+                    disabled={!register?.idgrado}
+                    style={{ width: "100%" }}
+                    onChange={(e) => {
+                      console.log(e.target.value);
+                      setRegister({ ...register, idseccion: e.target.value });
+                    }}
+                  >
+                    {sections.map((section) => (
+                      <MenuItem
+                        key={section.idseccion}
+                        value={section.idseccion}
+                      >
+                        {section.nombreSeccion}
+                      </MenuItem>
+                    ))}
+                  </Select>
                 </Grid>
                 <Grid item xs={6}>
                   <TextField required label={"Fecha"} value={new Date()} />
@@ -99,7 +169,7 @@ function RegisterForm({ open, setOpenForm }) {
             >
               Cancelar
             </Button>
-            <Button variant="contained" type={"submit"}>
+            <Button variant="contained" onClick={handleSubmit}>
               Agregar
             </Button>
           </DialogActions>

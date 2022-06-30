@@ -9,11 +9,13 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 
-function RegisterTable({
-  students = [{ NroDocIdent: 22336552, nombres: "Juan Perez" }],
-}) {
+function RegisterTable({ fetchRegisters, registers, setRegisters }) {
+  useEffect(() => {
+    fetchRegisters();
+  }, [fetchRegisters]);
+
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -22,24 +24,24 @@ function RegisterTable({
             <TableCell>DNI</TableCell>
             <TableCell>Nombres</TableCell>
             <TableCell>Grado</TableCell>
-            <TableCell>Periodo</TableCell>
             <TableCell>Seccion</TableCell>
             <TableCell>Fecha</TableCell>
+            <TableCell>Opciones</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {students.map((row) => (
+          {registers.map((row) => (
             <TableRow
-              key={row.idEstudiante}
+              key={row.NroDocIdent}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell component="th" scope="row">
                 {row.NroDocIdent}
               </TableCell>
-              <TableCell>{row.nombres}</TableCell>
-              <TableCell>1er grado</TableCell>
-              <TableCell>1</TableCell>
-              <TableCell>A</TableCell>
+              <TableCell>{`${row.nombres} ${row.ApePaterno}`}</TableCell>
+              <TableCell>{row.nombreGrado}</TableCell>
+              <TableCell>{row.nombreSeccion}</TableCell>
+              <TableCell>{row.fechaMatricula}</TableCell>
               <TableCell>
                 <ButtonGroup>
                   <Button

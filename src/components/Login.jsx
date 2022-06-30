@@ -3,6 +3,7 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
+import { toast } from "react-toastify";
 
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
@@ -39,6 +40,7 @@ export default function Login() {
       localStorage.setItem("token", res.data.token);
       navigate("/general");
     } else {
+      toast.error("Inserte un usuario y contraseña válidos");
       setErrorMessage(res.data.message);
     }
   };

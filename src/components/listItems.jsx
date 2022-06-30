@@ -3,8 +3,11 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 //import DashboardIcon from "@mui/icons-material/Dashboard";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import PeopleIcon from "@mui/icons-material/People";
+import SchoolIcon from "@mui/icons-material/School";
+import GradeIcon from "@mui/icons-material/Grade";
+import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
+import HistoryEduIcon from "@mui/icons-material/HistoryEdu";
+import BookIcon from "@mui/icons-material/Book";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import { useNavigate } from "react-router-dom";
 
@@ -19,13 +22,19 @@ export default function ListItems() {
     <React.Fragment>
       <ListItemButton onClick={() => goTo("/general")}>
         <ListItemIcon>
-          <ShoppingCartIcon />
+          <SchoolIcon />
         </ListItemIcon>
         <ListItemText primary="Estudiantes" />
       </ListItemButton>
+      <ListItemButton onClick={() => goTo("/grades")}>
+        <ListItemIcon>
+          <GradeIcon />
+        </ListItemIcon>
+        <ListItemText primary="Grados" />
+      </ListItemButton>
       <ListItemButton onClick={() => goTo("/register")}>
         <ListItemIcon>
-          <PeopleIcon />
+          <AppRegistrationIcon />
         </ListItemIcon>
         <ListItemText primary="Matriculas" />
       </ListItemButton>
@@ -37,13 +46,13 @@ export default function ListItems() {
       </ListItemButton>
       <ListItemButton onClick={() => goTo("/")}>
         <ListItemIcon>
-          <BarChartIcon />
+          <HistoryEduIcon />
         </ListItemIcon>
         <ListItemText primary="Docentes" />
       </ListItemButton>
       <ListItemButton onClick={() => goTo("/")}>
         <ListItemIcon>
-          <BarChartIcon />
+          <BookIcon />
         </ListItemIcon>
         <ListItemText primary="Registro de notas" />
       </ListItemButton>
