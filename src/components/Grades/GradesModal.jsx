@@ -12,7 +12,7 @@ import Axios from "axios";
 import { toast } from "react-toastify";
 import React, { useState } from "react";
 
-function GradesModal({ openModal, setOpenModal }) {
+function GradesModal({ openModal, setOpenModal, fetchGrades }) {
   const [grade, setGrade] = useState({});
   const handleSubmit = async () => {
     try {
@@ -21,6 +21,8 @@ function GradesModal({ openModal, setOpenModal }) {
       setOpenModal(false);
     } catch (error) {
       toast.error(error.response?.data || "Error al agregar el grado");
+    } finally {
+      fetchGrades()
     }
   };
   return (

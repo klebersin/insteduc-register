@@ -18,6 +18,7 @@ import StudentView from "./Student/StudentView";
 import RegisterView from "./Register/RegisterView";
 import GradesView from "./Grades/GradesView";
 import StaffView from "./Staff/StaffView";
+import CoursesView from "./Courses/CoursesView";
 
 const drawerWidth = 240;
 
@@ -169,6 +170,7 @@ function DashboardContent() {
           {route === "register" && <RegisterView />}
           {route === "grades" && <GradesView />}
           {route === "staff" && <StaffView />}
+          {route === "courses" && <CoursesView />}
         </Box>
       </Box>
     </ThemeProvider>

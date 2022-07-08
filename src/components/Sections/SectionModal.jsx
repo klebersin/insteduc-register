@@ -12,7 +12,7 @@ import Axios from "axios";
 import { toast } from "react-toastify";
 import React, { useState } from "react";
 
-function SectionModal({ openModal, setOpenModal, selectedGrade }) {
+function SectionModal({ openModal, setOpenModal, selectedGrade, fetchSections }) {
   const [section, setSection] = useState({});
   const handleSubmit = async () => {
     if (!section.nombreSeccion) {
@@ -28,6 +28,8 @@ function SectionModal({ openModal, setOpenModal, selectedGrade }) {
       setOpenModal(false);
     } catch (error) {
       toast.error(error.response?.data);
+    } finally {
+      fetchSections()
     }
   };
   return (

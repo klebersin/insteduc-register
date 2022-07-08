@@ -78,6 +78,7 @@ function GradesTable({ fetchGrades, grades }) {
           onClose={() => {
             setOpenSectionModal(false);
           }}
+          maxWidth={"xl"}
         >
           <DialogTitle id="alert-dialog-title">{"Secciones"}</DialogTitle>
           <DialogContent>

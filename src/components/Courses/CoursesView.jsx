@@ -1,23 +1,18 @@
-import React, { useCallback, useEffect, useState } from "react";
+import { Button, Container, Grid, Paper } from "@mui/material";
+import React, { useCallback, useState } from "react";
 import Axios from "axios";
-import SectionTable from "./SectionTable";
-import {Button, Container, Grid, Paper} from "@mui/material";
-import RegisterTable from "../Register/RegisterTable";
-import RegisterForm from "../Register/RegisterForm";
-import SectionModal from "./SectionModal";
+import CoursesTable from "./CoursesTable";
+import CoursesModal from "./CoursesModal";
 
-function SectionView({ selectedGrade }) {
-    const [sections, setSections] = useState([]);
+function CoursesView() {
+    const [courses, setCourses] = useState([]);
     const [openModal, setOpenModal] = useState(false);
-    const fetchSections = useCallback(async () => {
-        const res = await Axios.get(
-            `http://localhost:4000/section/${selectedGrade.idgrado}`
-        );
-        setSections(res.data);
+
+    const [selectedCourse, setSelectedCourse] = useState(null);
+    const fetchCourses = useCallback(async () => {
+        const res = await Axios.get("http://localhost:4000/courses");
+        setCourses(res.data);
     }, []);
-    useEffect(() => {
-        fetchSections();
-    }, [fetchSections]);
 
     return (
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
@@ -29,12 +24,11 @@ function SectionView({ selectedGrade }) {
                             setOpenModal(true);
                         }}
                     >
-                        Crear una sección
+                        Agregar un curso
                     </Button>
                 </Grid>
 
                 <Grid item xs={12}>
-
                     <Paper
                         sx={{
                             p: 2,
@@ -42,15 +36,21 @@ function SectionView({ selectedGrade }) {
                             flexDirection: "column",
                         }}
                     >
-                        <SectionTable sections={sections} />
+                        <CoursesTable
+                            fetchCourses={fetchCourses}
+                            courses={courses}
+                            setSelectedCourse={setSelectedCourse}
+                            setOpenModal={setOpenModal}
+                        />
                     </Paper>
                 </Grid>
                 {openModal && (
-                    <SectionModal
+                    <CoursesModal
                         openModal={openModal}
                         setOpenModal={setOpenModal}
-                        selectedGrade={selectedGrade}
-                        fetchSections={fetchSections}
+                        selectedCourse={selectedCourse}
+                        setSelectedCourse={setSelectedCourse}
+                        fetchCourses={fetchCourses}
                     />
                 )}
             </Grid>
@@ -58,4 +58,4 @@ function SectionView({ selectedGrade }) {
     );
 }
 
-export default SectionView;
+export default CoursesView;

@@ -37,7 +37,7 @@ function GradesView() {
           </Paper>
         </Grid>
         {openModal && (
-          <GradesModal openModal={openModal} setOpenModal={setOpenModal} />
+          <GradesModal openModal={openModal} setOpenModal={setOpenModal} fetchGrades={fetchGrades}/>
         )}
       </Grid>
     </Container>
