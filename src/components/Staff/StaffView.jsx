@@ -1,17 +1,19 @@
 import { Button, Container, Grid, Paper } from "@mui/material";
 import React, { useCallback, useState } from "react";
-import RegisterForm from "./RegisterForm";
-import RegisterTable from "./RegisterTable";
 import Axios from "axios";
+import StaffTable from "./StaffTable";
+import StaffModal from "./StaffModal";
 
-function RegisterView() {
-  const [registers, setRegisters] = useState([]);
+function StaffView() {
+  const [staffs, setStaffs] = useState([]);
   const [openModal, setOpenModal] = useState(false);
 
-  const fetchRegisters = useCallback(async () => {
-    const res = await Axios.get("http://localhost:4000/register");
-    setRegisters(res.data);
+  const [selectedStaff, setSelectedStaff] = useState(null);
+  const fetchStaff = useCallback(async () => {
+    const res = await Axios.get("http://localhost:4000/staff");
+    setStaffs(res.data);
   }, []);
+
   return (
     <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
       <Grid container spacing={3}>
@@ -22,7 +24,7 @@ function RegisterView() {
               setOpenModal(true);
             }}
           >
-            Matricular un alumno
+            Agregar un docente
           </Button>
         </Grid>
 
@@ -34,18 +36,21 @@ function RegisterView() {
               flexDirection: "column",
             }}
           >
-            <RegisterTable
-              fetchRegisters={fetchRegisters}
-              registers={registers}
-              setRegisters={setRegisters}
+            <StaffTable
+              fetchStaff={fetchStaff}
+              staffs={staffs}
+              setSelectedStaff={setSelectedStaff}
+              setOpenModal={setOpenModal}
             />
           </Paper>
         </Grid>
         {openModal && (
-          <RegisterForm
-            open={openModal}
-            setOpenForm={setOpenModal}
-            fetchRegisters={fetchRegisters}
+          <StaffModal
+            openModal={openModal}
+            setOpenModal={setOpenModal}
+            selectedStaff={selectedStaff}
+            setSelectedStaff={setSelectedStaff}
+            fetchStaff={fetchStaff}
           />
         )}
       </Grid>
@@ -53,4 +58,4 @@ function RegisterView() {
   );
 }
 
-export default RegisterView;
+export default StaffView;

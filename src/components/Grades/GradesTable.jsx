@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
-import Axios from "axios";
 import {
   Button,
   ButtonGroup,
+  Dialog,
+  DialogContent,
+  DialogTitle,
   Paper,
   Table,
   TableBody,
@@ -11,7 +13,7 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import SectionModal from "../Sections/SectionModal";
+import SectionView from "../Sections/SectionView";
 
 function GradesTable({ fetchGrades, grades }) {
   const [selectedGrade, setSelectedGrade] = useState(null);
@@ -19,11 +21,6 @@ function GradesTable({ fetchGrades, grades }) {
   useEffect(() => {
     fetchGrades();
   }, [fetchGrades]);
-
-  const deleteGrade = async (idgrado) => {
-    await Axios.delete(`http://localhost:4000/grade/${idgrado}`);
-    await fetchGrades();
-  };
 
   return (
     <TableContainer component={Paper}>
@@ -52,23 +49,22 @@ function GradesTable({ fetchGrades, grades }) {
                 <ButtonGroup>
                   <Button
                     variant="contained"
+                    color="success"
+                    onClick={() => {
+                      //deleteGrade(row.idgrado);
+                    }}
+                  >
+                    Editar
+                  </Button>
+                  <Button
+                    variant="contained"
                     color="primary"
                     onClick={() => {
                       setOpenSectionModal(true);
                       setSelectedGrade(row);
                     }}
                   >
-                    Sección
-                  </Button>
-
-                  <Button
-                    variant="contained"
-                    color="error"
-                    onClick={() => {
-                      deleteGrade(row.idgrado);
-                    }}
-                  >
-                    Eliminar
+                    Secciónes
                   </Button>
                 </ButtonGroup>
               </TableCell>
@@ -77,11 +73,17 @@ function GradesTable({ fetchGrades, grades }) {
         </TableBody>
       </Table>
       {openSectionModal && (
-        <SectionModal
-          openModal={openSectionModal}
-          setOpenModal={setOpenSectionModal}
-          selectedGrade={selectedGrade}
-        />
+        <Dialog
+          open={openSectionModal}
+          onClose={() => {
+            setOpenSectionModal(false);
+          }}
+        >
+          <DialogTitle id="alert-dialog-title">{"Secciones"}</DialogTitle>
+          <DialogContent>
+            <SectionView selectedGrade={selectedGrade} />
+          </DialogContent>
+        </Dialog>
       )}
     </TableContainer>
   );

@@ -17,6 +17,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import StudentView from "./Student/StudentView";
 import RegisterView from "./Register/RegisterView";
 import GradesView from "./Grades/GradesView";
+import StaffView from "./Staff/StaffView";
 
 const drawerWidth = 240;
 
@@ -167,6 +168,7 @@ function DashboardContent() {
           {route === "general" && <StudentView />}
           {route === "register" && <RegisterView />}
           {route === "grades" && <GradesView />}
+          {route === "staff" && <StaffView />}
         </Box>
       </Box>
     </ThemeProvider>
