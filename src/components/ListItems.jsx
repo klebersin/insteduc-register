@@ -51,7 +51,7 @@ export default function ListItems() {
                 </ListItemIcon>
                 <ListItemText primary="Cursos" />
             </ListItemButton>
-            <ListItemButton onClick={() => goTo("/")}>
+            <ListItemButton onClick={() => goTo("/notes")}>
                 <ListItemIcon>
                     <BookIcon />
                 </ListItemIcon>
