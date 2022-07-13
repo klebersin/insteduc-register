@@ -124,6 +124,29 @@ function StaffModal({
                     }
                   />
                 </Grid>
+                <Grid item xs={6}>
+                  <TextField
+                    required
+                    id="staff-username"
+                    label="Usuario"
+                    value={staff.usuario}
+                    onChange={(e) =>
+                      setStaff({ ...staff, usuario: e.target.value })
+                    }
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField
+                    required
+                    id="staff-password"
+                    label="Contraseña"
+                    value={staff.contraseña}
+                    type="password"
+                    onChange={(e) =>
+                      setStaff({ ...staff, contraseña: e.target.value })
+                    }
+                  />
+                </Grid>
 
                 <Grid item xs={12}>
                   <TextField
