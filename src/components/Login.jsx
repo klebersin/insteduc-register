@@ -38,7 +38,12 @@ export default function Login() {
     });
     if (res.data.token) {
       localStorage.setItem("token", res.data.token);
-      navigate("/general");
+      localStorage.setItem("role", res.data.usuario.rol);
+      if(res.data.usuario.rol === 'administrador'){
+        navigate("/general");
+      }else {
+        navigate("/staff");
+      }
     } else {
       toast.error("Inserte un usuario y contraseña válidos");
       setErrorMessage(res.data.message);

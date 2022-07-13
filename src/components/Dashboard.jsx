@@ -81,8 +81,13 @@ function DashboardContent() {
   React.useEffect(() => {
     const doEffect = () => {
       const token = localStorage.getItem("token");
+      const user = localStorage.getItem("role");
       if (!token) {
         navigate("/login");
+      }
+      console.log(user)
+      if(user === 'docente'){
+        navigate("/staff");
       }
     };
     doEffect();
@@ -171,6 +176,7 @@ function DashboardContent() {
           {route === "register" && <RegisterView />}
           {route === "grades" && <GradesView />}
           {route === "staff" && <StaffView />}
+          {route === "courses" && <CoursesView />}
           {route === "notes" && <NoteView />}
         </Box>
       </Box>

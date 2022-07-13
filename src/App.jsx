@@ -7,6 +7,7 @@ import { useEffect } from "react";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import StaffDashboard from "./components/StaffDashboard/StaffDashboard"
 
 function App() {
   useEffect(() => {}, []);
@@ -18,8 +19,10 @@ function App() {
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/staff" element={<StaffDashboard />} />
             <Route path="/:route" element={<Dashboard />} />
             <Route path="/:route/:id" element={<Dashboard />} />
+
           </Routes>
           <ToastContainer
             position="bottom-left"
