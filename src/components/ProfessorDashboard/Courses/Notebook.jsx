@@ -64,6 +64,21 @@ export default function Notebook({ course, open, setOpen }) {
   }, []);
   const handleSubmit = async () => {
     try {
+      if (notes.length < competencies.length) {
+        toast.error("Faltan notas");
+        return;
+      }
+
+      if (!notebook.idEstudiante) {
+        toast.error("Seleccione un estudiante");
+        return;
+      }
+
+      if (!notebook.idperiodo) {
+        toast.error("Seleccione un periodo");
+        return;
+      }
+
       if (!notebook.idregistronota) {
         const res = await Axios.post(
           "http://localhost:4000/notebook",
