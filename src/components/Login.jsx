@@ -32,22 +32,26 @@ export default function Login() {
   }, [navigate]);
 
   const handleSubmit = async () => {
-    const res = await axios.post("http://localhost:4000/login", {
-      user,
-      password,
-    });
-    if (res.data.token) {
-      localStorage.setItem("token", res.data.token);
-      localStorage.setItem("role", res.data.usuario.rol);
-      localStorage.setItem("userID", res.data.usuario.iddocente);
-      if (res.data.usuario.rol === "administrador") {
-        navigate("/general");
+    try {
+      const res = await axios.post("http://localhost:4000/login", {
+        user,
+        password,
+      });
+      if (res.data.token) {
+        localStorage.setItem("token", res.data.token);
+        localStorage.setItem("role", res.data.usuario.rol);
+        localStorage.setItem("userID", res.data.usuario.iddocente);
+        if (res.data.usuario.rol === "administrador") {
+          navigate("/general");
+        } else {
+          navigate("/dashboard/staff");
+        }
       } else {
-        navigate("/dashboard/staff");
+        toast.error("Inserte un usuario y contraseña válidos");
+        setErrorMessage(res.data.message);
       }
-    } else {
+    } catch (error) {
       toast.error("Inserte un usuario y contraseña válidos");
-      setErrorMessage(res.data.message);
     }
   };
 

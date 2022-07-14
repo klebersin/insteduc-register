@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function ListItems() {
   const navigate = useNavigate();
+  const user = localStorage.getItem("role");
 
   const goTo = (value) => {
     navigate(value);
@@ -30,12 +31,14 @@ export default function ListItems() {
         </ListItemIcon>
         <ListItemText primary="Estudiantes" />
       </ListItemButton>
-      <ListItemButton onClick={() => goTo("/general")}>
-        <ListItemIcon>
-          <ArrowBackIcon />
-        </ListItemIcon>
-        <ListItemText primary="Regresar" />
-      </ListItemButton>
+      {user === "administrador" && (
+        <ListItemButton onClick={() => goTo("/general")}>
+          <ListItemIcon>
+            <ArrowBackIcon />
+          </ListItemIcon>
+          <ListItemText primary="Regresar" />
+        </ListItemButton>
+      )}
     </React.Fragment>
   );
 }
