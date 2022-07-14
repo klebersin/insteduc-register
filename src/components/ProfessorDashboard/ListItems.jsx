@@ -5,6 +5,7 @@ import ListItemText from "@mui/material/ListItemText";
 //import DashboardIcon from "@mui/icons-material/Dashboard";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import SchoolIcon from "@mui/icons-material/School";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 import { useNavigate } from "react-router-dom";
 
@@ -28,6 +29,12 @@ export default function ListItems() {
           <SchoolIcon />
         </ListItemIcon>
         <ListItemText primary="Estudiantes" />
+      </ListItemButton>
+      <ListItemButton onClick={() => goTo("/general")}>
+        <ListItemIcon>
+          <ArrowBackIcon />
+        </ListItemIcon>
+        <ListItemText primary="Regresar" />
       </ListItemButton>
     </React.Fragment>
   );
