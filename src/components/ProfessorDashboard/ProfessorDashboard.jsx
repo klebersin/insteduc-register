@@ -14,13 +14,7 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ListItems from "./ListItems";
 import { Button } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
-import StudentView from "./Student/StudentView";
-import RegisterView from "./Register/RegisterView";
-import GradesView from "./Grades/GradesView";
-import StaffView from "./Staff/StaffView";
 import CoursesView from "./Courses/CoursesView";
-import AssignView from "./Assign/AssignView";
-import PeriodView from "./Period/PeriodView";
 
 const drawerWidth = 240;
 
@@ -82,12 +76,8 @@ function DashboardContent() {
   React.useEffect(() => {
     const doEffect = () => {
       const token = localStorage.getItem("token");
-      const user = localStorage.getItem("role");
       if (!token) {
         navigate("/login");
-      }
-      if (user === "docente") {
-        navigate("/dashboard/staff");
       }
     };
     doEffect();
@@ -172,19 +162,13 @@ function DashboardContent() {
           }}
         >
           <Toolbar />
-          {route === "general" && <StudentView />}
-          {route === "register" && <RegisterView />}
-          {route === "grades" && <GradesView />}
-          {route === "staff" && <StaffView />}
-          {route === "courses" && <CoursesView />}
-          {route === "assign" && <AssignView />}
-          {route === "period" && <PeriodView />}
+          {(!route || route === "courses") && <CoursesView />}
         </Box>
       </Box>
     </ThemeProvider>
   );
 }
 
-export default function Dashboard() {
+export default function ProfessorDashboard() {
   return <DashboardContent />;
 }

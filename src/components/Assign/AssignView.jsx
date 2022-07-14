@@ -1,17 +1,17 @@
 import { Button, Container, Grid, Paper } from "@mui/material";
 import React, { useCallback, useState } from "react";
 import Axios from "axios";
-import StaffTable from "./StaffTable";
-import StaffModal from "./StaffModal";
+import AssignTable from "./AssignTable";
+import AssignModal from "./AssignModal";
 
-function StaffView() {
-  const [staffs, setStaffs] = useState([]);
+function AssignView() {
+  const [assigns, setAssigns] = useState([]);
   const [openModal, setOpenModal] = useState(false);
 
-  const [selectedStaff, setSelectedStaff] = useState(null);
-  const fetchStaff = useCallback(async () => {
-    const res = await Axios.get("http://localhost:4000/staff");
-    setStaffs(res.data);
+  const [selectedAssign, setSelectedAssign] = useState(null);
+  const fetchAssigns = useCallback(async () => {
+    const res = await Axios.get("http://localhost:4000/assigns");
+    setAssigns(res.data);
   }, []);
 
   return (
@@ -24,7 +24,7 @@ function StaffView() {
               setOpenModal(true);
             }}
           >
-            Agregar personal
+            Asignar un curso
           </Button>
         </Grid>
 
@@ -36,21 +36,21 @@ function StaffView() {
               flexDirection: "column",
             }}
           >
-            <StaffTable
-              fetchStaff={fetchStaff}
-              staffs={staffs}
-              setSelectedStaff={setSelectedStaff}
+            <AssignTable
+              fetchAssigns={fetchAssigns}
+              assigns={assigns}
+              setSelectedAssign={setSelectedAssign}
               setOpenModal={setOpenModal}
             />
           </Paper>
         </Grid>
         {openModal && (
-          <StaffModal
+          <AssignModal
             openModal={openModal}
             setOpenModal={setOpenModal}
-            selectedStaff={selectedStaff}
-            setSelectedStaff={setSelectedStaff}
-            fetchStaff={fetchStaff}
+            selectedAssign={selectedAssign}
+            setSelectedAssign={setSelectedAssign}
+            fetchAssigns={fetchAssigns}
           />
         )}
       </Grid>
@@ -58,4 +58,4 @@ function StaffView() {
   );
 }
 
-export default StaffView;
+export default AssignView;

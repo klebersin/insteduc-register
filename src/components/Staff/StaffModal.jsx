@@ -5,7 +5,11 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  FormControl,
   Grid,
+  InputLabel,
+  MenuItem,
+  Select,
   TextField,
 } from "@mui/material";
 import Axios from "axios";
@@ -24,18 +28,18 @@ function StaffModal({
     try {
       if (!staff.iddocente) {
         await Axios.post(`http://localhost:4000/staff`, staff);
-        toast.info("Docente agregado");
+        toast.info("Personal agregado");
         setOpenModal(false);
       } else {
         await Axios.put(
           `http://localhost:4000/staff/${staff.iddocente}`,
           staff
         );
-        toast.info("Docente actualizado");
+        toast.info("Personal actualizado");
         setOpenModal(false);
       }
     } catch (error) {
-      toast.error(error.response?.data || "Error al agregar el docente");
+      toast.error(error.response?.data || "Error al agregar el personal");
     } finally {
       setSelectedStaff(null);
       fetchStaff();
@@ -51,7 +55,7 @@ function StaffModal({
         }}
       >
         <form>
-          <DialogTitle id="alert-dialog-title">{"Docente"}</DialogTitle>
+          <DialogTitle id="alert-dialog-title">{"Personal"}</DialogTitle>
           <DialogContent>
             <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
               <Grid container spacing={3}>
@@ -59,7 +63,7 @@ function StaffModal({
                   <TextField
                     required
                     id="staff-name"
-                    label="Nombres del docente"
+                    label="Nombres del personal"
                     value={staff.nombres}
                     onChange={(e) =>
                       setStaff({ ...staff, nombres: e.target.value })
@@ -94,7 +98,7 @@ function StaffModal({
                   <TextField
                     required
                     id="phone-number-staff"
-                    label="Celular del docente"
+                    label="Celular del personal"
                     value={staff.celular}
                     onChange={(e) =>
                       setStaff({ ...staff, celular: e.target.value })
@@ -114,15 +118,21 @@ function StaffModal({
                 </Grid>
 
                 <Grid item xs={6}>
-                  <TextField
-                    required
-                    id="staff-gender"
-                    label="Sexo del docente"
-                    value={staff.sexo}
-                    onChange={(e) =>
-                      setStaff({ ...staff, sexo: e.target.value })
-                    }
-                  />
+                  <FormControl fullWidth>
+                    <InputLabel id="demo-simple-select-label">Sexo</InputLabel>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      label="Sexo"
+                      value={staff.sexo}
+                      onChange={(e) =>
+                        setStaff({ ...staff, sexo: e.target.value })
+                      }
+                    >
+                      <MenuItem value={"Masculino"}>Masculino</MenuItem>
+                      <MenuItem value={"Femenino"}>Femenino</MenuItem>
+                    </Select>
+                  </FormControl>
                 </Grid>
                 <Grid item xs={6}>
                   <TextField
@@ -159,6 +169,23 @@ function StaffModal({
                       setStaff({ ...staff, direccion: e.target.value })
                     }
                   />
+                </Grid>
+                <Grid item xs={6}>
+                  <FormControl fullWidth>
+                    <InputLabel id="demo-simple-select-label">Rol</InputLabel>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      label="Rol"
+                      value={staff.rol}
+                      onChange={(e) =>
+                        setStaff({ ...staff, rol: e.target.value })
+                      }
+                    >
+                      <MenuItem value={"administrador"}>Administrador</MenuItem>
+                      <MenuItem value={"docente"}>Docente</MenuItem>
+                    </Select>
+                  </FormControl>
                 </Grid>
               </Grid>
             </Container>

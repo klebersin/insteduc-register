@@ -39,10 +39,11 @@ export default function Login() {
     if (res.data.token) {
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("role", res.data.usuario.rol);
-      if(res.data.usuario.rol === 'administrador'){
+      localStorage.setItem("userID", res.data.usuario.iddocente);
+      if (res.data.usuario.rol === "administrador") {
         navigate("/general");
-      }else {
-        navigate("/staff");
+      } else {
+        navigate("/dashboard/staff");
       }
     } else {
       toast.error("Inserte un usuario y contraseña válidos");

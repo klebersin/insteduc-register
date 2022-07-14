@@ -10,16 +10,16 @@ import { Button, ButtonGroup } from "@mui/material";
 import Axios from "axios";
 import ConfirmModal from "../common/ConfirmModal";
 
-export default function StudentTable({
-  editStudent,
-  students = [],
-  fetchStudents,
+export default function PeriodTable({
+  editPeriod,
+  periods = [],
+  fetchPeriods,
 }) {
   const [deletingUser, setDeletingUser] = React.useState(null);
   const [openModal, setOpenModal] = React.useState(false);
-  const deleteStudent = async (id) => {
-    await Axios.delete(`http://localhost:4000/student/${id}`);
-    fetchStudents();
+  const deletePeriod = async (id) => {
+    await Axios.delete(`http://localhost:4000/period/${id}`);
+    fetchPeriods();
   };
 
   return (
@@ -27,32 +27,32 @@ export default function StudentTable({
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>DNI</TableCell>
+            <TableCell>#</TableCell>
             <TableCell>Nombres</TableCell>
-            <TableCell>Apellidos paternos</TableCell>
-            <TableCell>Apellidos maternos</TableCell>
+            <TableCell>Descripcion</TableCell>
+            <TableCell>Año</TableCell>
             <TableCell>Opciones</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {students.map((row) => (
+          {periods.map((row, index) => (
             <TableRow
               key={row.idEstudiante}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                {row.NroDocIdent}
+                {index + 1}
               </TableCell>
-              <TableCell>{row.nombres}</TableCell>
-              <TableCell>{row.ApePaterno}</TableCell>
-              <TableCell>{row.ApeMaterno}</TableCell>
+              <TableCell>{row.nombre}</TableCell>
+              <TableCell>{row.descripcion}</TableCell>
+              <TableCell>{row.anio}</TableCell>
               <TableCell>
                 <ButtonGroup>
                   <Button
                     variant="contained"
                     color="success"
                     onClick={() => {
-                      editStudent(row);
+                      editPeriod(row);
                     }}
                   >
                     Editar
@@ -76,7 +76,7 @@ export default function StudentTable({
       <ConfirmModal
         open={openModal}
         setOpen={setOpenModal}
-        deleteStudent={deleteStudent}
+        deletePeriod={deletePeriod}
         deletingUser={deletingUser}
       />
     </TableContainer>

@@ -12,14 +12,19 @@ import {
   TableRow,
 } from "@mui/material";
 
-function StaffTable({ fetchStaff, staffs, setSelectedStaff, setOpenModal }) {
+function AssignTable({
+  fetchAssigns,
+  assigns,
+  setSelectedAssign,
+  setOpenModal,
+}) {
   useEffect(() => {
-    fetchStaff();
-  }, [fetchStaff]);
+    fetchAssigns();
+  }, [fetchAssigns]);
 
-  const deleteStaff = async (iddocente) => {
-    await Axios.delete(`http://localhost:4000/staff/${iddocente}`);
-    await fetchStaff();
+  const deleteAssign = async (idassign) => {
+    await Axios.delete(`http://localhost:4000/assigns/${idassign}`);
+    await fetchAssigns();
   };
 
   return (
@@ -28,35 +33,26 @@ function StaffTable({ fetchStaff, staffs, setSelectedStaff, setOpenModal }) {
         <TableHead>
           <TableRow>
             <TableCell>#</TableCell>
-            <TableCell>Nombres</TableCell>
-            <TableCell>Apellido paterno</TableCell>
-            <TableCell>Apellido materno</TableCell>
-            <TableCell>Celular</TableCell>
-            <TableCell>Correo</TableCell>
-            <TableCell>Direccion</TableCell>
-            <TableCell>Sexo</TableCell>
-            <TableCell>Rol</TableCell>
+            <TableCell>Docente</TableCell>
+            <TableCell>Grado</TableCell>
+            <TableCell>Seccion</TableCell>
+            <TableCell>Curso</TableCell>
             <TableCell>Opciones</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {staffs.map((row, index) => (
+          {assigns.map((row, index) => (
             <TableRow
-              key={row.iddocente}
+              key={row.idasignacion}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell component="th" scope="row">
                 {index + 1}
               </TableCell>
-              <TableCell>{row.nombres}</TableCell>
-              <TableCell>{row.apePaterno}</TableCell>
-              <TableCell>{row.apeMaterno}</TableCell>
-              <TableCell>{row.celular}</TableCell>
-              <TableCell>{row.correo}</TableCell>
-              <TableCell>{row.direccion}</TableCell>
-              <TableCell>{row.sexo}</TableCell>
-              <TableCell>{row.rol}</TableCell>
-
+              <TableCell>{`${row.nombres} ${row.apePaterno}`}</TableCell>
+              <TableCell>{row.nombreGrado}</TableCell>
+              <TableCell>{row.nombreSeccion}</TableCell>
+              <TableCell>{row.nombreCurso}</TableCell>
               <TableCell>
                 <ButtonGroup>
                   <Button
@@ -64,7 +60,7 @@ function StaffTable({ fetchStaff, staffs, setSelectedStaff, setOpenModal }) {
                     color="primary"
                     onClick={() => {
                       setOpenModal(true);
-                      setSelectedStaff(row);
+                      setSelectedAssign(row);
                     }}
                   >
                     Editar
@@ -74,7 +70,7 @@ function StaffTable({ fetchStaff, staffs, setSelectedStaff, setOpenModal }) {
                     variant="contained"
                     color="error"
                     onClick={() => {
-                      deleteStaff(row.iddocente);
+                      deleteAssign(row.idcurso);
                     }}
                   >
                     Eliminar
@@ -89,4 +85,4 @@ function StaffTable({ fetchStaff, staffs, setSelectedStaff, setOpenModal }) {
   );
 }
 
-export default StaffTable;
+export default AssignTable;

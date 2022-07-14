@@ -15,7 +15,6 @@ import {
 import { Container } from "@mui/system";
 import { useForm } from "react-hook-form";
 import Axios from "axios";
-import { DesktopDatePicker } from "@mui/x-date-pickers";
 import { toast } from "react-toastify";
 
 export default function StudentForm({
@@ -26,11 +25,6 @@ export default function StudentForm({
   fetchStudents,
 }) {
   const { register, handleSubmit } = useForm({});
-  const [value, setValue] = React.useState(null);
-
-  const handleChange = (newValue) => {
-    setValue(newValue);
-  };
 
   const save = async (data) => {
     if (!data.nombres) {
@@ -159,17 +153,6 @@ export default function StudentForm({
                   />
                 </Grid>
 
-                <Grid item xs={6}>
-                  <DesktopDatePicker
-                    label="Fecha de nacimiento"
-                    inputFormat="MM/dd/yyyy"
-                    value={value}
-                    onChange={handleChange}
-                    renderInput={(params) => (
-                      <TextField {...params} {...register("FechaNac")} />
-                    )}
-                  />
-                </Grid>
                 <Grid item xs={6}>
                   <TextField
                     id="outlined-required"
@@ -322,7 +305,7 @@ export default function StudentForm({
               Cancelar
             </Button>
             <Button variant="contained" type={"submit"}>
-              Agregar
+              {editingStudent.idEstudiante ? "Modificar" : "Agregar"}
             </Button>
           </DialogActions>
         </form>
