@@ -1,24 +1,24 @@
 import React, { useCallback, useEffect, useState } from "react";
 import Axios from "axios";
-import SectionTable from "./SectionTable";
+import CompetencyTable from "./CompetencyTable";
 import {Button, Container, Grid, Paper} from "@mui/material";
-import SectionModal from "./SectionModal";
+import CompetencyModal from "./CompetencyModal";
 
-function SectionView({ selectedGrade }) {
-    const [sections, setSections] = useState([]);
+function CompetencyView({ selectedCourse }) {
+    const [competencies, setCompetencies] = useState([]);
     const [openModal, setOpenModal] = useState(false);
-    const [editingSection, setEditingSection] = useState(null);
-    const fetchSections = useCallback(async () => {
+    const [editingCompetency, setEditingCompetency] = useState(null);
+    const fetchCompetencies = useCallback(async () => {
         const res = await Axios.get(
-            `http://localhost:4000/section/${selectedGrade.idgrado}`
+            `http://localhost:4000/competency/${selectedCourse.idcurso}`
         );
-        setSections(res.data);
-    }, [selectedGrade]);
+        setCompetencies(res.data);
+    }, [selectedCourse]);
     useEffect(() => {
-        fetchSections();
-    }, [fetchSections]);
+        fetchCompetencies();
+    }, [fetchCompetencies]);
     const openDialog = (row) =>{
-        setEditingSection(row)
+        setEditingCompetency(row)
         setOpenModal(true);
     }
 
@@ -32,7 +32,7 @@ function SectionView({ selectedGrade }) {
                             openDialog();
                         }}
                     >
-                        Crear una sección
+                        Crear una competencia
                     </Button>
                 </Grid>
 
@@ -45,19 +45,19 @@ function SectionView({ selectedGrade }) {
                             flexDirection: "column",
                         }}
                     >
-                        <SectionTable
-                            editSection={openDialog}
-                            sections={sections}
+                        <CompetencyTable
+                            editCompetency={openDialog}
+                            competencies={competencies}
                         />
                     </Paper>
                 </Grid>
                 {openModal && (
-                    <SectionModal
-                        editingSection={editingSection}
+                    <CompetencyModal
+                        editingCompetency={editingCompetency}
                         openModal={openModal}
                         setOpenModal={setOpenModal}
-                        selectedGrade={selectedGrade}
-                        fetchSections={fetchSections}
+                        selectedCourse={selectedCourse}
+                        fetchCompetencies={fetchCompetencies}
                     />
                 )}
             </Grid>
@@ -65,4 +65,4 @@ function SectionView({ selectedGrade }) {
     );
 }
 
-export default SectionView;
+export default CompetencyView;

@@ -11,32 +11,32 @@ import {
 } from "@mui/material";
 import React from "react";
 
-function SectionTable({ editSection, sections }) {
+function CompetencyTable({ editCompetency, competencies }) {
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
             <TableCell>#</TableCell>
-            <TableCell>Seccion</TableCell>
+            <TableCell>Descripción</TableCell>
             <TableCell>Opciones</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {sections.map((row, index) => (
+          {competencies.map((row, index) => (
             <TableRow
               key={row.NroDocIdent}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell>{index + 1}</TableCell>
-              <TableCell>{row.nombreSeccion}</TableCell>
+              <TableCell>{row.descripcion}</TableCell>
               <TableCell>
                 <ButtonGroup>
                   <Button
                     variant="contained"
                     color="success"
                     onClick={() => {
-                      editSection(row)
+                      editCompetency(row)
                     }}
                   >
                     Editar
@@ -54,4 +54,4 @@ function SectionTable({ editSection, sections }) {
   );
 }
 
-export default SectionTable;
+export default CompetencyTable;

@@ -12,31 +12,32 @@ import Axios from "axios";
 import { toast } from "react-toastify";
 import React, { useState } from "react";
 
-function SectionModal({ openModal, setOpenModal, selectedGrade, fetchSections, editingSection ={} }) {
-  const [section, setSection] = useState(editingSection || {});
+function CompetencyModal({ openModal, setOpenModal, selectedCourse, fetchCompetencies, editingCompetency ={} }) {
+  const [competency, setCompetency] = useState(editingCompetency || {});
+  console.log(selectedCourse)
   const handleSubmit = async () => {
 
-    if (!section.nombreSeccion) {
-      toast.error("Insertar nombre de seccion");
+    if (!competency.descripcion) {
+      toast.error("Insertar nombre de competencia");
       return;
     }
     try {
-      if(!editingSection.idseccion){
-        console.log("here section post")
-        await Axios.post(`http://localhost:4000/section`, {
-          ...section,
-          idgrado: selectedGrade.idgrado,
+      if(!editingCompetency.idcompetencia){
+        console.log("here competency post")
+        await Axios.post(`http://localhost:4000/competency`, {
+          ...competency,
+          idcurso: selectedCourse.idcurso,
         });
-        toast.success("Seccion agregada");
+        toast.success("Competencia agregada");
       }else{
-        console.log("here section put")
-        await Axios.put(`http://localhost:4000/section/${editingSection.idseccion}`, section)
-        toast.success("Grado modificado");
+        console.log("here competency put")
+        await Axios.put(`http://localhost:4000/competency/${editingCompetency.idcompetencia}`, competency)
+        toast.success("Competencia modificada");
       }
     } catch (error) {
       toast.error(error.response?.data);
     } finally {
-      fetchSections()
+      fetchCompetencies()
       setOpenModal(false);
     }
   };
@@ -50,7 +51,7 @@ function SectionModal({ openModal, setOpenModal, selectedGrade, fetchSections, e
       >
         <form>
           <DialogTitle id="alert-dialog-title">{
-            editingSection.idseccion ? "Editar Sección": "Nueva seccion"
+            editingCompetency.idcompetencia ? "Editar Competencia": "Nueva Competencia"
           }</DialogTitle>
           <DialogContent>
             <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
@@ -58,19 +59,20 @@ function SectionModal({ openModal, setOpenModal, selectedGrade, fetchSections, e
                 <Grid item xs={6}>
                   <TextField
                     disabled
-                    id="grade-name"
-                    label="Grado"
-                    value={selectedGrade.nombreGrado}
+                    id="course-name"
+                    label="Curso"
+                    value={selectedCourse.nombreCurso}
                   />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12}>
                   <TextField
                     required
-                    id="grade-name"
-                    label="Nombre de la seccion"
-                    value={section.nombreSeccion}
+                    fullWidth
+                    id="competency-description"
+                    label="Descripcion de la Competencia"
+                    value={competency.descripcion}
                     onChange={(e) =>
-                      setSection({ ...section, nombreSeccion: e.target.value })
+                      setCompetency({ ...competency, descripcion: e.target.value })
                     }
                   />
                 </Grid>
@@ -89,7 +91,7 @@ function SectionModal({ openModal, setOpenModal, selectedGrade, fetchSections, e
             </Button>
             <Button variant="contained" onClick={handleSubmit}>
               {
-                editingSection.idseccion ? "Modificar":"Agregar"
+                editingCompetency.idcompetencia ? "Modificar":"Agregar"
               }
             </Button>
           </DialogActions>
@@ -99,4 +101,4 @@ function SectionModal({ openModal, setOpenModal, selectedGrade, fetchSections, e
   );
 }
 
-export default SectionModal;
+export default CompetencyModal;

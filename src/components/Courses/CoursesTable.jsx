@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
+import React, {useEffect, useState} from "react";
 import Axios from "axios";
 import {
     Button,
-    ButtonGroup,
+    ButtonGroup, Dialog, DialogContent, DialogTitle,
     Paper,
     Table,
     TableBody,
@@ -11,8 +11,13 @@ import {
     TableHead,
     TableRow,
 } from "@mui/material";
+import CompetencyView from "../Competency/CompetencyView";
 
 function CoursesTable({ fetchCourses, courses, setSelectedCourse, setOpenModal }) {
+
+    const [courseCompetency, setCourseCompetency] = useState()
+    const [openCompetencyModal, setOpenCompetencyModal ] = useState(false);
+
     useEffect(() => {
         fetchCourses();
     }, [fetchCourses]);
@@ -58,6 +63,16 @@ function CoursesTable({ fetchCourses, courses, setSelectedCourse, setOpenModal }
                                     >
                                         Editar
                                     </Button>
+                                    <Button
+                                        variant="contained"
+                                        color="success"
+                                        onClick={() => {
+                                            setOpenCompetencyModal(true);
+                                            setCourseCompetency(row);
+                                        }}
+                                    >
+                                        Competencias
+                                    </Button>
 
                                     <Button
                                         variant="contained"
@@ -74,6 +89,22 @@ function CoursesTable({ fetchCourses, courses, setSelectedCourse, setOpenModal }
                     ))}
                 </TableBody>
             </Table>
+            {
+                openCompetencyModal && (
+                    <Dialog
+                        open={openCompetencyModal}
+                        onClose={ () =>{
+                            setOpenCompetencyModal(false);
+                        }}
+                        maxWidth={"xl"}
+                    >
+                        <DialogTitle id="alert-dialog-title">{"Competencias"}</DialogTitle>
+                        <DialogContent>
+                            <CompetencyView selectedCourse={courseCompetency}/>
+                        </DialogContent>-
+                    </Dialog>
+                )
+            }
         </TableContainer>
     );
 }

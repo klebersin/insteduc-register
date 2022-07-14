@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import SectionView from "../Sections/SectionView";
 
-function GradesTable({ fetchGrades, grades }) {
+function GradesTable({ editGrade, fetchGrades, grades }) {
   const [selectedGrade, setSelectedGrade] = useState(null);
   const [openSectionModal, setOpenSectionModal] = useState(false);
   useEffect(() => {
@@ -51,7 +51,7 @@ function GradesTable({ fetchGrades, grades }) {
                     variant="contained"
                     color="success"
                     onClick={() => {
-                      //deleteGrade(row.idgrado);
+                      editGrade(row)
                     }}
                   >
                     Editar

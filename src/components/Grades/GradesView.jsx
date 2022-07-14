@@ -7,10 +7,16 @@ import Axios from "axios";
 function GradesView() {
   const [grades, setGrades] = useState([]);
   const [openModal, setOpenModal] = useState(false);
+  const [editingGrade, setEditingGrade] = useState(null);
   const fetchGrades = useCallback(async () => {
     const res = await Axios.get("http://localhost:4000/grade");
     setGrades(res.data);
   }, []);
+
+  const openDialog = (row) =>{
+      setEditingGrade(row);
+      setOpenModal(true);
+  }
   return (
     <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
       <Grid container spacing={3}>
@@ -18,7 +24,7 @@ function GradesView() {
           <Button
             variant="contained"
             onClick={() => {
-              setOpenModal(true);
+                openDialog()
             }}
           >
             Agregar un Grado
@@ -33,11 +39,20 @@ function GradesView() {
               flexDirection: "column",
             }}
           >
-            <GradesTable fetchGrades={fetchGrades} grades={grades} />
+            <GradesTable
+                editGrade={openDialog}
+                fetchGrades={fetchGrades}
+                grades={grades}
+            />
           </Paper>
         </Grid>
         {openModal && (
-          <GradesModal openModal={openModal} setOpenModal={setOpenModal} fetchGrades={fetchGrades}/>
+          <GradesModal
+              editingGrade={editingGrade}
+              openModal={openModal}
+              setOpenModal={setOpenModal}
+              fetchGrades={fetchGrades}
+          />
         )}
       </Grid>
     </Container>
