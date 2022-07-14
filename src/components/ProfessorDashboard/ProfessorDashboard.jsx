@@ -164,7 +164,7 @@ function DashboardContent() {
         >
           <Toolbar />
           {(!route || route === "courses") && <CoursesView />}
-          {(!route || route === "students") && <StudentsView />}
+          {route === "students" && <StudentsView />}
         </Box>
       </Box>
     </ThemeProvider>

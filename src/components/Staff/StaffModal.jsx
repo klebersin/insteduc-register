@@ -227,6 +227,7 @@ function StaffModal({
                     >
                       <MenuItem value={"administrador"}>Administrador</MenuItem>
                       <MenuItem value={"docente"}>Docente</MenuItem>
+                      <MenuItem value={"auxiliar"}>Auxiliar</MenuItem>
                     </Select>
                   </FormControl>
                 </Grid>
