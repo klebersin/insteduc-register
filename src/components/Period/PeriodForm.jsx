@@ -20,6 +20,19 @@ export default function PeriodForm({
 
   const handleSubmit = async () => {
     try {
+      if(!period.nombre){
+        toast.error("El nombre del periodo es requerido");
+        return;
+      }
+      if(!period.descripcion){
+        toast.error("La descripción del periodo es requerido");
+        return;
+      }
+      if(!period.anio){
+        toast.error("El año del periodo es requerido");
+        return;
+      }
+
       if (!period.idperiodo) {
         await Axios.post("http://localhost:4000/period", period);
         toast.info("Periodo agregado");

@@ -22,6 +22,14 @@ function CoursesModal({
     const [course, setCourse] = useState(selectedCourse || {});
     const handleSubmit = async () => {
         try {
+            if(!course.nombreCurso){
+                toast.error("El nombre del curso es requerido")
+                return;
+            }
+            if(!course.descripcionCurso){
+                toast.error("La descripcion del curso es requerido")
+                return;
+            }
             if (!course.idcurso) {
                 await Axios.post(`http://localhost:4000/courses`, course);
                 toast.info("Curso agregado");

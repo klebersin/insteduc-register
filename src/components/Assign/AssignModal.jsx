@@ -53,6 +53,24 @@ function AssignsModal({
   }, [fetchStaff, fetchCourses, fetchGrades]);
 
   const handleSubmit = async () => {
+
+    if(!assign.iddocente){
+      toast.error("Seleccione docente")
+      return;
+    }
+    if(!assign.idcurso){
+      toast.error("Seleccione curso")
+      return;
+    }
+    if(!assign.idgrado){
+      toast.error("Seleccione grado")
+      return;
+    }
+    if(!assign.idseccion){
+      toast.error("Seleccione sección")
+      return;
+    }
+
     try {
       if (!assign.idasignacion) {
         await Axios.post(`http://localhost:4000/assigns`, assign);

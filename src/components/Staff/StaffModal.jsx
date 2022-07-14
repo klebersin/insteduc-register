@@ -25,6 +25,49 @@ function StaffModal({
 }) {
   const [staff, setStaff] = useState(selectedStaff || {});
   const handleSubmit = async () => {
+    if(!staff.nombres){
+      toast.error("El nombre del personal es requerido")
+      return;
+    }
+    if(!staff.apePaterno){
+      toast.error("El apellido parterno del personal es requerido")
+      return;
+    }
+    if(!staff.apeMaterno){
+      toast.error("El apellido materno del personal es requerido")
+      return;
+    }
+    if(!staff.celular){
+      toast.error("El celular del personal es requerido")
+      return;
+    }
+    // eslint-disable-next-line
+    if(!/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(
+        staff.correo
+    )){
+      toast.error("Ingrese un correo válido")
+      return;
+    }
+    if(!staff.sexo){
+      toast.error("Seleccionar el género/sexo del personal")
+      return;
+    }
+    if(!staff.usuario){
+      toast.error("El usuario del personal es requerido")
+      return;
+    }
+    if(!staff.contraseña){
+      toast.error("La contraseña del personal es requerido")
+      return;
+    }
+    if(!staff.direccion){
+      toast.error("La dirección del personal es requerido")
+      return;
+    }
+    if(!staff.rol){
+      toast.error("Seleccionar el rol del personal")
+      return;
+    }
     try {
       if (!staff.iddocente) {
         await Axios.post(`http://localhost:4000/staff`, staff);
