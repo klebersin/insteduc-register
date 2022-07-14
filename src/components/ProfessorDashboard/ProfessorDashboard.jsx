@@ -15,6 +15,7 @@ import ListItems from "./ListItems";
 import { Button } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 import CoursesView from "./Courses/CoursesView";
+import StudentsView from "./Students/StudentsView";
 
 const drawerWidth = 240;
 
@@ -163,6 +164,7 @@ function DashboardContent() {
         >
           <Toolbar />
           {(!route || route === "courses") && <CoursesView />}
+          {(!route || route === "students") && <StudentsView />}
         </Box>
       </Box>
     </ThemeProvider>

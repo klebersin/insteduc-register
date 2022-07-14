@@ -9,6 +9,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import Slide from "@mui/material/Slide";
 import Axios from "axios";
 import { Container } from "@mui/system";
+import { toast } from "react-toastify";
 import {
   FormControl,
   Grid,
@@ -28,16 +29,26 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
+const defaultNotes = ["AD", "A", "B", "C", "D"];
 export default function Notebook({ course, open, setOpen }) {
   const [students, setStudents] = React.useState([]);
+  const [competencies, setCompetencies] = React.useState([]);
   const [periods, setPeriods] = React.useState([]);
-  const [notebook, setNotebook] = React.useState({});
+  const [notebook, setNotebook] = React.useState({ idcurso: course.idcurso });
+  const [notes, setNotes] = React.useState([]);
 
   const fetchStudents = async () => {
     const res = await Axios.get(
       `http://localhost:4000/student/section/${course.idseccion}`
     );
     setStudents(res.data);
+  };
+
+  const fetchCompetencies = async () => {
+    const res = await Axios.get(
+      `http://localhost:4000/competency/course/${course.idcurso}`
+    );
+    setCompetencies(res.data);
   };
 
   const fetchPeriods = async () => {
@@ -48,8 +59,41 @@ export default function Notebook({ course, open, setOpen }) {
   React.useEffect(() => {
     fetchStudents();
     fetchPeriods();
+    fetchCompetencies();
     // eslint-disable-next-line
   }, []);
+  const handleSubmit = async () => {
+    try {
+      if (!notebook.idregistronota) {
+        const res = await Axios.post(
+          "http://localhost:4000/notebook",
+          notebook
+        );
+
+        await Axios.post("http://localhost:4000/note", {
+          idregistronota: res.data.idregistronota,
+          notas: notes,
+        });
+
+        toast.info("Nota agregada");
+      } else {
+        await Axios.put(
+          `http://localhost:4000/notebook/${notebook.idregistronota}`,
+          notebook
+        );
+
+        await Axios.post("http://localhost:4000/note", {
+          idregistronota: notebook.idregistronota,
+          notas: notes,
+        });
+
+        toast.info("Nota actualizada");
+      }
+    } catch (error) {
+      toast.error(error.response?.data || "Error al agregar la nota");
+    } finally {
+    }
+  };
 
   const handleClose = () => {
     setOpen(false);
@@ -74,7 +118,7 @@ export default function Notebook({ course, open, setOpen }) {
               <CloseIcon />
             </IconButton>
             <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-              Libreta
+              Registro de notas
             </Typography>
             <Button autoFocus color="inherit" onClick={handleClose}>
               Guardar
@@ -137,23 +181,71 @@ export default function Notebook({ course, open, setOpen }) {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {[].map((row, index) => (
-                      <TableRow
-                        key={row.iddocente}
-                        sx={{
-                          "&:last-child td, &:last-child th": { border: 0 },
-                        }}
-                      >
-                        <TableCell component="th" scope="row">
-                          {index + 1}
+                    {competencies.map((row, index) => (
+                      <TableRow key={row.iddocente}>
+                        <TableCell>{index + 1}</TableCell>
+                        <TableCell>{row.descripcion}</TableCell>
+                        <TableCell>
+                          <FormControl>
+                            <InputLabel id="staff-label">Nota</InputLabel>
+                            <Select
+                              labelId="staff-label"
+                              label="Nota"
+                              style={{ width: 200 }}
+                              onChange={(e) => {
+                                if (
+                                  !notes.find(
+                                    (note) =>
+                                      note.idcompetencia === row.idcompetencia
+                                  )
+                                ) {
+                                  setNotes([
+                                    ...notes,
+                                    {
+                                      idcompetencia: row.idcompetencia,
+                                      nota: e.target.value,
+                                    },
+                                  ]);
+                                } else {
+                                  const newNotes = notes.map((note) => {
+                                    if (
+                                      note.idcompetencia === row.idcompetencia
+                                    ) {
+                                      return {
+                                        ...note,
+                                        nota: e.target.value,
+                                      };
+                                    }
+                                    return note;
+                                  });
+                                  setNotes(newNotes);
+                                }
+                              }}
+                            >
+                              {defaultNotes.map((note, i) => (
+                                <MenuItem key={note} value={note}>
+                                  {note}
+                                </MenuItem>
+                              ))}
+                            </Select>
+                          </FormControl>
                         </TableCell>
-                        <TableCell>{row.nombreCurso}</TableCell>
-                        <TableCell>{row.descripcionCurso}</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
                 </Table>
               </TableContainer>
+            </Grid>
+            <Grid item xs={8} />
+            <Grid item xs={4}>
+              <Button
+                variant="contained"
+                onClick={() => {
+                  handleSubmit();
+                }}
+              >
+                {"Guardar"}
+              </Button>
             </Grid>
           </Grid>
         </Container>
