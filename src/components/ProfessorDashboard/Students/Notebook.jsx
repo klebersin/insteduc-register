@@ -11,12 +11,8 @@ import Axios from "axios";
 import { Container } from "@mui/system";
 import { toast } from "react-toastify";
 import {
-  FormControl,
   Grid,
-  InputLabel,
-  MenuItem,
   Paper,
-  Select,
   Table,
   TableBody,
   TableCell,
@@ -31,12 +27,14 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 export default function Notebook({ student, open, setOpen }) {
+  const [notes, setNotes] = React.useState([]);
+
   const fetchNotes = async () => {
     try {
       const res = await Axios.get(
         `http://localhost:4000/notebook/student/${student.idEstudiante}`
       );
-      console.log(res.data);
+      setNotes(res.data);
     } catch (error) {
       toast.error("Error al obtener las notas");
     }
@@ -44,6 +42,7 @@ export default function Notebook({ student, open, setOpen }) {
 
   useEffect(() => {
     fetchNotes();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleClose = () => {
@@ -69,7 +68,7 @@ export default function Notebook({ student, open, setOpen }) {
               <CloseIcon />
             </IconButton>
             <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-              Registro de notas
+              Notas de {`${student.nombres} ${student.ApePaterno}`}
             </Typography>
             <Button autoFocus color="inherit" onClick={handleClose}>
               Guardar
@@ -77,7 +76,35 @@ export default function Notebook({ student, open, setOpen }) {
           </Toolbar>
         </AppBar>
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-          <Grid container spacing={3}></Grid>
+          <Grid container spacing={3}>
+            <TableContainer component={Paper}>
+              <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>#</TableCell>
+                    <TableCell>Curso</TableCell>
+                    <TableCell>Competencia</TableCell>
+                    <TableCell>Nota</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {notes.map((row, index) => (
+                    <TableRow
+                      key={row.idEstudiante}
+                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                    >
+                      <TableCell component="th" scope="row">
+                        {index + 1}
+                      </TableCell>
+                      <TableCell>{row.nombreCurso}</TableCell>
+                      <TableCell>{row.descripcion}</TableCell>
+                      <TableCell>{row.nota}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Grid>
         </Container>
       </Dialog>
     </div>
